@@ -1,21 +1,24 @@
 {
-	"name": "with-tailwind",
-	"version": "0.0.0",
-	"private": true,
-	"scripts": {
-		"dev": "adastra dev -s boilerplate-starter-theme.myshopify.com",
-		"dev:shopify": "shopify theme dev -s boilerplate-starter-theme.myshopify.com",
-		"build": "vite build"
-	},
-	"devDependencies": {
-		"adastra-cli": "latest",
-		"adastra-plugin": "latest",
-		"autoprefixer": "^10.4.13",
-		"postcss": "^8.4.21",
-		"tailwindcss": "^3.2.7",
-		"vite": "^4.1.4"
-	},
-	"dependencies": {
-		"gsap": "^3.12.2"
-	}
+  "name": "with-tailwind",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "adastra dev -s boilerplate-starter-theme.myshopify.com",
+    "dev:shopify": "shopify theme dev -s boilerplate-starter-theme.myshopify.com",
+    "build": "vite build"
+  },
+  "devDependencies": {
+    "@shopify/prettier-plugin-liquid": "^1.3.0",
+    "adastra-cli": "latest",
+    "adastra-plugin": "latest",
+    "autoprefixer": "^10.4.13",
+    "postcss": "^8.4.21",
+    "prettier": "^3.0.3",
+    "prettier-plugin-tailwindcss": "^0.5.4",
+    "tailwindcss": "^3.2.7",
+    "vite": "^4.1.4"
+  },
+  "dependencies": {
+    "gsap": "^3.12.2"
+  }
 }

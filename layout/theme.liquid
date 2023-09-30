@@ -1,38 +1,39 @@
 <!doctype html>
-<html class="no-js" lang="{{ request.locale.iso_code }}">
+<html class='no-js' lang='{{ request.locale.iso_code }}'>
   <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="generator" content="adastra">
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <meta name='viewport' content='width=device-width,initial-scale=1'>
+    <meta name='generator' content='adastra'>
 
-    <link rel="canonical" href="{{ canonical_url }}">
+    <link rel='canonical' href='{{ canonical_url }}'>
 
     {% if settings.favicon != blank %}
-      <link fetchpriority="low" rel="icon" href="{{ settings.favicon | image_url: width: 32, height: 32 }}" sizes="32x32">
+      <link
+        fetchpriority='low'
+        rel='icon'
+        href='{{ settings.favicon | image_url: width: 32, height: 32 }}'
+        sizes='32x32'
+      >
     {% endif %}
 
     <title>{{ page_title }}</title>
 
-    <meta name="description" content="{{ page_description | default: shop.name | escape }}">
+    <meta name='description' content='{{ page_description | default: shop.name | escape }}'>
 
     {% comment %} We preconnect to commonly used third-parties to initiate TCP/TLS handshake {% endcomment %}
-    <link rel="preconnect" href="https://cdn.shopify.com" crossorigin>
+    <link rel='preconnect' href='https://cdn.shopify.com' crossorigin>
 
     {% comment %} We check if its a system font, or a web-safe font {% endcomment %}
     {% unless settings.type_heading.system? and settings.type_body.system? %}
-      <link rel="preconnect" href="https://fonts.shopifycdn.com" crossorigin>
+      <link rel='preconnect' href='https://fonts.shopifycdn.com' crossorigin>
     {% endunless %}
+
+    <link rel='preload' href='{{- 'mono-light.woff2' | asset_url -}}' as='font' type='font/woff2' crossorigin>
 
     {% liquid
       render 'colors'
-      render 'typography'
     %}
-
-    <script>
-      document.documentElement.className = document.documentElement.className.replace('no-js', 'js')
-      window.addEventListener('load', () => document.documentElement.classList.add('ready'))
-    </script>
 
     <!-- shopify/apps -->
     {{ content_for_header }}
@@ -43,10 +44,11 @@
       render 'adastra' with 'index.js'
     %}
   </head>
-  <body>
+  <body class='text-[var(--font-heading-family)]'>
     <main
-      id="MainContent"
-      tabindex="-1">
+      id='MainContent'
+      tabindex='-1'
+    >
       {{ content_for_layout }}
     </main>
 
@@ -58,7 +60,7 @@
         cart_update_url: '{{ routes.cart_update_url }}',
         cart_url: '{{ routes.cart_url }}',
         predictive_search_url: '{{ routes.predictive_search_url }}',
-        product_recommendations_url: '{{ routes.product_recommendations_url }}'
+        product_recommendations_url: '{{ routes.product_recommendations_url }}',
       }
     </script>
   </body>

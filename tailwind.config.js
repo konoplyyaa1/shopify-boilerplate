@@ -6,8 +6,7 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        heading: 'var(--font-heading-family)',
-        body: 'var(--font-body-family)',
+        mono: ['mono', 'monospace'],
       },
       fontSize: {
         sm: ['var(--font-size-sm)', '1.428'],

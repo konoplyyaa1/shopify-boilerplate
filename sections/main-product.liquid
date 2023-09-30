@@ -1,5 +1,13 @@
+<script data-product-json type='application/json'>
+  {{- product | json -}}
+</script>
+
 <section>
   <product-form>
+    <div data-price>
+      {{- product.selected_or_first_available_variant.price | money_with_currency -}}
+    </div>
+
     <form>
       {%- for option in product.options_with_values -%}
         <fieldset>

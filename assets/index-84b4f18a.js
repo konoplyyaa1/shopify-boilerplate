@@ -1,0 +1,1 @@
+class e extends HTMLElement{constructor(){super(),this.form=this.querySelector("form"),this.button=this.querySelector('[type="submit"]'),this.options=this.querySelectorAll('[type="radio"]'),this.form.addEventListener("input",this.getFormData.bind(this))}getFormData(){const t=new FormData(this.form);console.log(t.get("id"))}}customElements.define("product-form",e);

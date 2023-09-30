@@ -1,0 +1,32 @@
+<section>
+  <product-form>
+    <form>
+      {%- for option in product.options_with_values -%}
+        <fieldset>
+          <legend>{{- option.name -}}</legend>
+          <div>
+            {%- for option_value in option.values -%}
+              <input
+                type='radio'
+                name='{{- option.name -}}'
+                id='{{- option.name -}}-{{- option_value -}}'
+                value='{{- option_value -}}'
+                {%- if option_value == option.selected_value -%}
+                  checked
+                {%- endif -%}
+              >
+
+              <label
+                for='{{- option.name -}}-{{- option_value -}}'
+              >
+                {{- option_value -}}
+              </label>
+            {%- endfor -%}
+          </div>
+        </fieldset>
+      {%- endfor -%}
+
+      <input type='submit' value='Buy Now'>
+    </form>
+  </product-form>
+</section>

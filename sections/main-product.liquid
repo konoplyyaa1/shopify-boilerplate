@@ -2,39 +2,83 @@
   {{- product | json -}}
 </script>
 
-<section>
-  <product-form>
-    <div data-price>
-      {{- product.selected_or_first_available_variant.price | money_with_currency -}}
+<section class='grid min-h-screen grid-cols-12 gap-6 bg-black p-6 text-white'>
+  <div class='col-span-6'>
+    <div class='mb-40 flex items-center justify-between border-t-2 pt-1 text-sm'>
+      <h1>{{- product.title -}}</h1>
+      <span>{{- product.variants.size }} Variations</span>
     </div>
 
-    <form>
-      {%- for option in product.options_with_values -%}
-        <fieldset>
-          <legend>{{- option.name -}}</legend>
-          <div>
-            {%- for option_value in option.values -%}
-              <input
-                type='radio'
-                name='{{- option.name -}}'
-                id='{{- option.name -}}-{{- option_value -}}'
-                value='{{- option_value -}}'
-                {%- if option_value == option.selected_value -%}
-                  checked
-                {%- endif -%}
-              >
+    <div class='text-[15rem] leading-[15rem]'>
+      {{- product.metafields.info.model -}}
+    </div>
 
-              <label
-                for='{{- option.name -}}-{{- option_value -}}'
-              >
-                {{- option_value -}}
-              </label>
-            {%- endfor -%}
-          </div>
-        </fieldset>
-      {%- endfor -%}
+    <product-form>
+      <form>
+        {%- for option in product.options_with_values -%}
+          <fieldset class='is-active group'>
+            <legend
+              role='button'
+              class='group/button flex w-full cursor-pointer justify-between border-t-2 border-white py-6 text-sm transition-all duration-200 ease-in'
+            >
+              <div class='transition-all duration-200 ease-in group-hover/button:opacity-50'>
+                {{- option.name -}}
+              </div>
+              <div class='w-4 transition-all duration-200 ease-in group-hover/button:opacity-50'>
+                <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 448 512'>
+                  <path fill='currentColor' d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32v144H48c-17.7 0-32 14.3-32 32s14.3 32 32 32h144v144c0 17.7 14.3 32 32 32s32-14.3 32-32V288h144c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z"/>
+                </svg>
+              </div>
+            </legend>
 
-      <input type='submit' value='Buy Now'>
-    </form>
-  </product-form>
+            <div class='group-is-active:grid-rows-1 group grid grid-rows-[0] overflow-hidden transition-all duration-200 ease-in'>
+              <div class='group-is-active:visible invisible flex min-h-0 items-center justify-between space-x-4 pb-6 transition-all duration-200 ease-in'>
+                {%- for option_value in option.values -%}
+                  <div class='w-full'>
+                    <input
+                      class='peer hidden appearance-none'
+                      type='radio'
+                      name='{{- option.name -}}'
+                      id='{{- option.name -}}-{{- option_value -}}'
+                      value='{{- option_value -}}'
+                      {%- if option_value == option.selected_value -%}
+                        checked
+                      {%- endif -%}
+                    >
+
+                    <label
+                      role='button'
+                      class='flex w-full cursor-pointer items-center justify-center rounded-lg border-2 border-[#1D1D1D] bg-transparent py-6 text-center text-sm transition-all duration-200 ease-in peer-checked:bg-[#1D1D1D]'
+                      for='{{- option.name -}}-{{- option_value -}}'
+                    >
+                      {{- option_value -}}
+                    </label>
+                  </div>
+                {%- endfor -%}
+              </div>
+            </div>
+          </fieldset>
+        {%- endfor -%}
+
+        <button
+          class='border-w w-full space-x-2 rounded-xl border-2 bg-white py-6 text-sm text-black transition-all duration-300 ease-in hover:bg-black hover:text-white'
+          type='submit'
+        >
+          <span>Add to Cart</span>
+          <span data-price>
+            (
+            {{- product.selected_or_first_available_variant.price | money_with_currency -}}
+            )
+          </span>
+        </button>
+      </form>
+    </product-form>
+  </div>
+  <div class='col-span-6'>
+    {%- for variant in product.variants -%}
+      {%- if forloop.index == 1 -%}
+        {%- render 'component.image', image: variant.featured_image, class: 'rounded-xl', picture_class: 'h-full' -%}
+      {%- endif -%}
+    {%- endfor -%}
+  </div>
 </section>

@@ -1,41 +1,81 @@
 {% comment %}
   Renders a specific image.
 
-  Adastra also teaches you stuff ✦
-  - Think of snippets like functions each time you are going
-  to reuse a code block, why not just make it a snippet ;)
+  Guidelines:
+    - Think of snippets like functions each time you are going
+    to reuse a code block, why not just make it a snippet ;)
 
   Accepts:
-    - image: {object} Img object (required)
-    - lazyload: {boolean} Lazyload the image (optional)
-    - alt: {string} Custom image ALT (optional)
+    - image: {object} Image object (required)
+    - class: {string} Extra classes (optional)
+    - picture_class: {string} Extra classes for the picture element (optional)
+    - lazyload: {boolean} Lazyload the image (optional) (default: true)
+    - alt: {string} Custom image ALT (optional) (default: image.alt)
+    - placeholder: {string} Placeholder name when image is empty (optional) (default: 'hero-apparel-1')
+    - ratio_width: {number} Image width (optional) (default: image.width)
+    - ratio_height: {number} Image height (optional) (default: image.height)
 
   Usage:
-    {% render 'image', image: product.featured_image %}
+    {% render 'image' with product.featured_image %}
 {% endcomment %}
 
 {% liquid
-  assign image_alt = alt | default: image.alt | escape
+  assign alt = alt | default: image.alt | escape
+  assign image_class = 'absolute top-0 left-0 w-full h-full object-cover max-w-full h-auto opacity-0 duration-500 transition-opacity data-[loaded=true]:opacity-100 ' | append: class
+
+  assign ratio_width = ratio_width | default: image.width
+  assign ratio_height = ratio_height | default: image.height
+
   assign preload = false
+  assign priority = 'auto'
+  assign decoding = 'auto'
 
   if lazyload or lazyload == null
     assign lazyload = 'lazy'
+    assign decoding = 'async'
   elsif lazyload == false
-    assign preload = true
     assign lazyload = 'eager'
+    assign priority = 'high'
+    assign preload = true
   endif
 %}
 
-<picture>
-  {% if image != blank %}
-    {{ image
-      | image_url: width: 500
-      | image_tag: alt: image_alt,
-      class: 'w-full h-full object-cover object-center rounded',
-      widths: '165, 360, 500, 720, 960, 1066, 1280, 1500, 1800',
-      loading: lazyload, preload: preload
+{% if image and image != blank %}
+  <picture
+    style='--aspect-ratio: calc({{- ratio_height }} / {{ ratio_width }} * 100%)'
+    class='relative block w-full pb-[var(--aspect-ratio)] {{ picture_class }}'
+  >
+    {{
+      image
+      | image_url: width: image.width
+      | image_tag:
+        alt: image_alt,
+        class: image_class,
+        widths: '200,300,400,500,600,700,800,1000,1200,1400,1600,1800,2000,2200',
+        loading: lazyload,
+        fetchpriority: priority,
+        decoding: decoding,
+        preload: preload,
+        data-loaded: false,
+        onload: 'this.setAttribute("data-loaded", true)'
     }}
-  {% else %}
-    {{ 'image' | placeholder_svg_tag: 'w-full h-full rounded border' }}
-  {% endif %}
-</picture>
+  </picture>
+{% else %}
+  {% liquid
+    assign placeholder_name = placeholder | default: 'hero-apparel-1'
+    capture placeholder_image
+      echo placeholder_name | placeholder_svg_tag | base64_encode | prepend: 'data:image/svg+xml;base64,'
+    endcapture
+  %}
+
+  <img
+    role='presentation'
+    class='{{ image_class }}'
+    src='{{ placeholder_image }}'
+    alt='{{ placeholder_name }}'
+    width='800'
+    height='800'
+    loading='{{ lazyload }}'
+    fetchpriority='{{ priority }}'
+  >
+{% endif %}

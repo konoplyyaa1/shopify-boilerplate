@@ -4,12 +4,12 @@
 
 @layer base {
   @font-face {
-    font-family: 'mono';
-    src: url('../../assets/mono.woff2') format('woff2');
+    font-family: 'space-mono';
+    src: url('../../assets/space-mono.woff2') format('woff2');
   }
 
   html {
-    @apply h-full bg-surface font-mono text-base text-accent antialiased;
+    @apply h-full bg-black font-mono text-base text-accent antialiased;
   }
 
   model-viewer {

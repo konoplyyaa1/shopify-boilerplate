@@ -1,3 +1,5 @@
+const plugin = require('tailwindcss/plugin')
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
@@ -6,15 +8,16 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        mono: ['mono', 'monospace'],
+        mono: ['space-mono', 'monospace'],
       },
       fontSize: {
-        sm: ['var(--font-size-sm)', '1.428'],
+        sm: ['1.25rem', '1.75rem'],
         base: ['var(--font-size-base)', '1.5'],
         lg: ['var(--font-size-lg)', '1.555'],
         xl: ['var(--font-size-xl)', '1.4'],
       },
       colors: {
+        black: '#151515',
         accent: 'hsla(var(--color-accent) / <alpha-value>)',
         surface: 'hsla(var(--color-surface) / <alpha-value>)',
         primary: 'hsla(var(--color-primary) / <alpha-value>)',
@@ -26,4 +29,10 @@ module.exports = {
       },
     },
   },
+  plugins: [
+    plugin(function ({ addVariant }) {
+      addVariant('is-active', '&.is-active')
+      addVariant('group-is-active', ':merge(.group).is-active &')
+    }),
+  ],
 }
